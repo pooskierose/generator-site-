@@ -1,38 +1,36 @@
 <script>
-/* -------------------------------
-   PAYWALL CONFIG
----------------------------------*/
-const PAYMENT_LINK = "PAYMENT_LINK_URL_HERE";  // ← Put your product/checkout link here
-const ACCESS_CODE_NORM = "ELLEVIP";            // ← Your password (normalized, no dashes)
-const STORAGE_KEY  = "eeluxe_paid_v1";
+const PAYMENT_LINK = "YOUR_CHECKOUT_LINK_HERE"; 
+const ACCESS_CODE_NORM = "ELLEVIP";
+const STORAGE_KEY = "eeluxe_paid_v1";
 
-/* Show/hide app vs paywall */
-function showApp(){
-  document.getElementById('paywall').classList.add('hide');
-  document.getElementById('app').classList.remove('hide');
-  localStorage.setItem(STORAGE_KEY, '1');
-}
 function showPaywall(){
   document.getElementById('paywall').classList.remove('hide');
   document.getElementById('app').classList.add('hide');
 }
 
-/* On load: auto-unlock if ?unlock=1 or localStorage already set */
+function showApp(){
+  document.getElementById('paywall').classList.add('hide');
+  document.getElementById('app').classList.remove('hide');
+  localStorage.setItem(STORAGE_KEY, '1');
+}
+
+// On load: auto-unlock
 (function initAccess(){
   const params = new URLSearchParams(window.location.search);
   const unlocked = params.get('unlock') === '1' || localStorage.getItem(STORAGE_KEY) === '1';
   if(unlocked){ showApp(); } else { showPaywall(); }
 })();
 
-/* Buy button */
+// Buy button
 document.getElementById('btnBuy').addEventListener('click', ()=>{
   window.open(PAYMENT_LINK, '_blank');
 });
 
-/* Code button — accepts ELLEVIP (case-insensitive, ignores dashes/spaces) */
+// Code button – accepts ELLEVIP
 function normalizeCode(s){
-  return (s||"").toUpperCase().replace(/[^A-Z0-9]/g,""); 
+  return (s||"").toUpperCase().replace(/[^A-Z0-9]/g,"");
 }
+
 document.getElementById('btnCode').addEventListener('click', ()=>{
   const raw = document.getElementById('accessCode').value;
   if (normalizeCode(raw) === ACCESS_CODE_NORM){
@@ -41,6 +39,7 @@ document.getElementById('btnCode').addEventListener('click', ()=>{
     alert('Invalid code. Check your email/receipt and try again.');
   }
 });
+
 document.getElementById('accessCode').addEventListener('keydown', e=>{
   if(e.key === 'Enter') document.getElementById('btnCode').click();
 });
