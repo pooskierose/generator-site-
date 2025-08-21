@@ -5,17 +5,16 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Elle & East Luxe — Chibi Character Prompt Generator</title>
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cinzel:wght@600;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-
 <style>
   :root{
-    /* Brand colors (unchanged) */
+    /* Brand colors (kept) */
     --pink:#ff4da6;
     --hotpink:#ff3f9b;
     --white:#ffffff;
     --purple:#9b4dff;
     --peach:#ffaf87;
-    --bgA:#ff6ea7;
-    --bgB:#ffe9f3;
+    --bgA:#ff6ea7;   /* top background start */
+    --bgB:#ffe9f3;   /* background end (near white pink) */
     --card:#fff7fb;
     --ink:#222;
     --muted:#6b6b6b;
@@ -32,7 +31,7 @@
     margin:0;
     font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
     color:var(--ink);
-    /* Neon pink -> white ombré background (unchanged) */
+    /* Neon pink -> white ombré background (kept) */
     background:
       radial-gradient(1200px 800px at 80% 80%, rgba(255,255,255,.7), transparent 60%),
       linear-gradient(180deg, var(--bgA) 0%, var(--bgB) 100%);
@@ -45,193 +44,91 @@
     padding:28px 18px 120px;
   }
 
-  /* Header / logo (unchanged) */
+  /* Header / logo (kept) */
   .brandRow{
-    display:flex;
-    align-items:center;
-    gap:16px;
-    flex-wrap:wrap;
-    margin-bottom:12px;
-    justify-content:center;
-    text-align:center;
+    display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+    margin-bottom:12px; justify-content:center; text-align:center;
   }
   .logoBlock{ display:flex; align-items:baseline; gap:12px; }
   .logoScript{
-    font-family:"Great Vibes", cursive;
-    font-size:44px;
-    line-height:1;
-    color:#fff;
+    font-family:"Great Vibes", cursive; font-size:44px; line-height:1; color:#fff;
     text-shadow:0 2px 0 rgba(0,0,0,.05), 0 0 18px rgba(255,255,255,.55);
     letter-spacing:.5px;
   }
   .logoCaps{
-    font-family:"Cinzel", serif;
-    font-weight:700;
-    font-size:16px;
-    letter-spacing:8px;
-    color:#fff;
-    margin-left:6px;
-    opacity:.95;
-    text-shadow:0 0 14px rgba(255,255,255,.6);
+    font-family:"Cinzel", serif; font-weight:700; font-size:16px; letter-spacing:8px; color:#fff;
+    margin-left:6px; opacity:.95; text-shadow:0 0 14px rgba(255,255,255,.6);
   }
 
   .headline{
-    margin-top:8px;
-    color:#fff;
-    text-shadow:0 1px 0 rgba(0,0,0,.08), 0 0 10px rgba(255,255,255,.6);
+    margin-top:8px; color:#fff; text-shadow:0 1px 0 rgba(0,0,0,.08), 0 0 10px rgba(255,255,255,.6);
     text-align:center;
   }
-  .headline h1{
-    margin:0 0 4px;
-    font-size:34px;
-    letter-spacing:.2px;
-    font-weight:800;
-  }
-  .headline p{
-    margin:0;
-    opacity:.95;
-    font-weight:600;
-  }
+  .headline h1{ margin:0 0 4px; font-size:34px; letter-spacing:.2px; font-weight:800; }
+  .headline p{ margin:0; opacity:.95; font-weight:600; }
 
   /* Buttons */
   .btn{
-    --from: var(--pink);
-    --to:   var(--white);
-    --ringA: rgba(255,77,166,.7);
-    --ringB: rgba(255,255,255,.85);
-    display:inline-flex;
-    align-items:center;
-    gap:10px;
-    border:none;
-    cursor:pointer;
-    padding:13px 26px;
-    border-radius:28px;
-    font-weight:800;
-    color:#fff;
-    text-shadow:0 0 6px rgba(255,255,255,.9);
+    --from: var(--pink); --to: var(--white);
+    --ringA: rgba(255,77,166,.7); --ringB: rgba(255,255,255,.85);
+    display:inline-flex; align-items:center; gap:10px;
+    border:none; cursor:pointer; padding:13px 26px; border-radius:28px;
+    font-weight:800; color:#fff; text-shadow:0 0 6px rgba(255,255,255,.9);
     background:linear-gradient(45deg,var(--from),var(--to));
-    box-shadow:
-      0 0 0 2px rgba(255,255,255,.25) inset,
-      0 0 18px var(--ringA),
-      0 0 28px var(--ringB);
+    box-shadow: 0 0 0 2px rgba(255,255,255,.25) inset, 0 0 18px var(--ringA), 0 0 28px var(--ringB);
     transition:transform .18s ease, box-shadow .2s ease, filter .2s ease, background .25s ease;
   }
-  .btn:hover{
-    transform:translateY(-1px) scale(1.03);
-    box-shadow:
-      0 0 0 2px rgba(255,255,255,.35) inset,
-      0 0 24px var(--ringA),
-      0 0 36px var(--ringB);
-    filter:saturate(1.08);
-  }
+  .btn:hover{ transform:translateY(-1px) scale(1.03); filter:saturate(1.08); }
   .btn.is-active{
-    --from: var(--purple);
-    --to:   var(--pink);
-    --ringA: rgba(155,77,255,.95);
-    --ringB: rgba(255,77,166,1);
-  }
-
-  .actionsTop{
-    display:flex;
-    gap:14px;
-    flex-wrap:wrap;
-    margin:18px 0 12px;
-    justify-content:center;
-  }
-
-  /* Card & layout */
-  .card{
-    background:linear-gradient(180deg,#ffffffcc,#fff8fdcc);
-    border-radius:18px;
-    padding:16px 18px;
-    box-shadow:
-      0 8px 30px rgba(255,77,166,.18),
-      0 2px 0 rgba(255,255,255,.7) inset;
-    border:1px solid rgba(255,255,255,.65);
-    backdrop-filter: blur(4px);
-  }
-
-  .howTo{ margin:12px 0 18px; color:#fff; }
-  .howTo .card{ color:#41283a; }
-
-  /* Generated output */
-  .output{ margin-top:10px; }
-  .output h3{ margin:6px 0 10px; text-align:center; }
-  .output .box{
-    background:#ffffff;
-    border-radius:12px;
-    padding:14px;
-    border:2px dashed rgba(255,77,166,.3);
-  }
-  .output .secondary{
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-    margin-top:12px;
-    justify-content:center;
+    --from: var(--purple); --to: var(--pink);
+    --ringA: rgba(155,77,255,.95); --ringB: rgba(255,77,166,1);
   }
   .btn--copy { --from:#ff7fbc; --to:#ffbddc; }
   .btn--gen  { --from:#ffb84d; --to:#fff0c9; color:#342100; text-shadow:none; }
   .btn--pose { --from:#6aa8ff; --to:#e1edff; }
   .btn--clear{ --from:#ff5f6d; --to:#ffc371; }
 
+  .actionsTop{ display:flex; gap:14px; flex-wrap:wrap; margin:18px 0 12px; justify-content:center; }
+
+  /* Card & layout */
+  .card{
+    background:linear-gradient(180deg,#ffffffcc,#fff8fdcc);
+    border-radius:18px; padding:16px 18px;
+    box-shadow: 0 8px 30px rgba(255,77,166,.18), 0 2px 0 rgba(255,255,255,.7) inset;
+    border:1px solid rgba(255,255,255,.65); backdrop-filter: blur(4px);
+  }
+
+  .howTo{ margin:12px 0 18px; color:#fff; }
+  .howTo .card{ color:#41283a; }
+
+  /* Output */
+  .output{ margin-top:10px; }
+  .output h3{ margin:6px 0 10px; text-align:center; }
+  .output .box{
+    background:#ffffff; border-radius:12px; padding:14px; border:2px dashed rgba(255,77,166,.3);
+    min-height:76px;
+  }
+  .output .secondary{ display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; justify-content:center; }
+
   /* Picker grid */
   .grid{
-    display:grid;
-    grid-template-columns: repeat(2,minmax(280px,1fr));
-    gap:18px;
-    margin-top:18px;
+    display:grid; grid-template-columns: repeat(2,minmax(280px,1fr)); gap:18px; margin-top:18px;
   }
-  @media (min-width: 980px){
-    .grid{ grid-template-columns: repeat(3,minmax(280px,1fr)); }
-  }
+  @media (min-width: 980px){ .grid{ grid-template-columns: repeat(3,minmax(280px,1fr)); } }
 
   .picker{
-    background:#fffdfd;
-    border:1px solid rgba(255,255,255,.7);
-    border-radius:16px;
-    padding:12px;
-    box-shadow:
-      0 8px 20px rgba(255,165,210,.2),
-      0 1px 0 rgba(255,255,255,.85) inset;
-    position:relative;
+    background:#fffdfd; border:1px solid rgba(255,255,255,.7); border-radius:16px; padding:12px;
+    box-shadow: 0 8px 20px rgba(255,165,210,.2), 0 1px 0 rgba(255,255,255,.85) inset; position:relative;
   }
-  .picker h4{
-    margin:2px 0 10px;
-    display:flex;
-    align-items:center;
-    gap:8px;
-    font-weight:800;
-  }
-  .scroll{
-    display:flex;
-    flex-direction:column;
-    gap:8px;
-    max-height:180px;
-    overflow:auto;
-    padding-right:4px;
-  }
+  .picker h4{ margin:2px 0 10px; display:flex; align-items:center; gap:8px; font-weight:800; }
+  .scroll{ display:flex; flex-direction:column; gap:8px; max-height:190px; overflow:auto; padding-right:4px; }
   .scroll::-webkit-scrollbar{ width:10px; }
-  .scroll::-webkit-scrollbar-track{
-    background:linear-gradient(180deg,#ffe1f2,#fff);
-    border-radius:10px;
-  }
-  .scroll::-webkit-scrollbar-thumb{
-    background:linear-gradient(180deg,#ffd2eb,#ffffff);
-    border-radius:10px;
-    border:2px solid #fff;
-    box-shadow:0 0 10px rgba(255,77,166,.5);
-  }
+  .scroll::-webkit-scrollbar-track{ background:linear-gradient(180deg,#ffe1f2,#fff); border-radius:10px; }
+  .scroll::-webkit-scrollbar-thumb{ background:linear-gradient(180deg,#ffd2eb,#ffffff); border-radius:10px; border:2px solid #fff; box-shadow:0 0 10px rgba(255,77,166,.5); }
 
   .opt{
-    border:none;
-    border-radius:12px;
-    padding:10px 12px;
-    text-align:left;
-    background:linear-gradient(180deg, #fff, #fff5fb);
-    color:#3d2232;
-    font-weight:600;
-    cursor:pointer;
+    border:none; border-radius:12px; padding:10px 12px; text-align:left;
+    background:linear-gradient(180deg, #fff, #fff5fb); color:#3d2232; font-weight:600; cursor:pointer;
     box-shadow:0 0 0 2px #ffe6f3 inset, 0 2px 6px rgba(0,0,0,.04);
     transition:transform .12s ease, box-shadow .2s ease, background .25s ease, color .25s ease;
   }
@@ -242,50 +139,26 @@
     color:#8b1d5a;
   }
 
-  .helper{
-    color:#fff;
-    font-weight:700;
-    opacity:.9;
-    margin-bottom:6px;
-    text-shadow:0 0 8px rgba(255,255,255,.6);
-    text-align:center;
-  }
+  .helper{ color:#fff; font-weight:700; opacity:.9; margin-bottom:6px; text-shadow:0 0 8px rgba(255,255,255,.6); text-align:center; }
+  .footerNote{ margin-top:26px; color:#fff; opacity:.9; font-size:14px; text-align:center; }
 
-  .footerNote{
-    margin-top:26px;
-    color:#fff;
-    opacity:.9;
-    font-size:14px;
-    text-align:center;
-  }
-
-  /* --- PAYWALL styles --- */
+  /* Paywall */
   .paywall{
-    max-width:820px;
-    margin:38px auto 0;
+    max-width:820px; margin:38px auto 0;
     background:linear-gradient(180deg,#ffffffdd,#fff5fbdd);
-    border:1px solid rgba(255,255,255,.7);
-    border-radius:16px;
-    padding:18px;
-    box-shadow:0 10px 40px rgba(255,77,166,.22);
-    text-align:center;
+    border:1px solid rgba(255,255,255,.7); border-radius:16px; padding:18px;
+    box-shadow:0 10px 40px rgba(255,77,166,.22); text-align:center;
   }
   .paywall h2{ margin:6px 0 8px; }
   .paywall p{ margin:8px 0 14px; }
-  .unlockRow{
-    display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:10px;
-  }
-  .input{
-    padding:12px 14px; border-radius:12px; border:1px solid #ffd0ea; min-width:260px;
-    outline:none; font-size:15px;
-  }
+  .unlockRow{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:10px; }
+  .input{ padding:12px 14px; border-radius:12px; border:1px solid #ffd0ea; min-width:260px; outline:none; font-size:15px; }
   .noteTiny{ font-size:13px; opacity:.85; margin-top:8px; }
   .hide{ display:none; }
 </style>
 </head>
 <body>
   <div class="wrap">
-
     <!-- Brand / Logo -->
     <div class="brandRow">
       <div class="logoBlock">
@@ -313,7 +186,6 @@
 
     <!-- APP (hidden until unlocked) -->
     <div id="app" class="hide">
-
       <!-- How to use -->
       <section class="howTo">
         <div class="card">
@@ -355,13 +227,12 @@
 
 <script>
 /* -------------------------------
-   PAYWALL CONFIG
+   PAYWALL (same-page unlock)
 ---------------------------------*/
-const PAYMENT_LINK = "PAYMENT_LINK_URL_HERE";     // ← Replace with Stripe/Gumroad/Payhip Payment Link
-const ACCESS_CODE  = "ELLEEAST-ACCESS-2025";      // ← Set your manual unlock code
-const STORAGE_KEY  = "eeluxe_paid_v1";
+const PAYMENT_LINK = "PAYMENT_LINK_URL_HERE";   // ← optional: Stripe/Gumroad/Payhip URL
+const ACCESS_CODE  = "ELLEEAST-ACCESS-2025";    // ← set your manual unlock code
+const STORAGE_KEY  = "eeluxe_paid_v2";
 
-/* Show/hide app vs paywall */
 function showApp(){
   document.getElementById('paywall').classList.add('hide');
   document.getElementById('app').classList.remove('hide');
@@ -379,24 +250,41 @@ function showPaywall(){
   if(unlocked){ showApp(); } else { showPaywall(); }
 })();
 
-/* Buy & Code buttons */
 document.getElementById('btnBuy').addEventListener('click', ()=>{
-  window.open(PAYMENT_LINK, '_blank');
+  if(PAYMENT_LINK && PAYMENT_LINK !== "PAYMENT_LINK_URL_HERE"){
+    window.open(PAYMENT_LINK, '_blank');
+  }else{
+    alert("Add your payment link in the code (PAYMENT_LINK).");
+  }
 });
 document.getElementById('btnCode').addEventListener('click', ()=>{
   const code = (document.getElementById('accessCode').value||'').trim();
-  if(code && code.toUpperCase() === ACCESS_CODE.toUpperCase()){
-    showApp();
-  }else{
-    alert('Invalid code. Check your email/receipt and try again.');
-  }
+  if(code && code.toUpperCase() === ACCESS_CODE.toUpperCase()){ showApp(); }
+  else{ alert('Invalid code. Check your email/receipt and try again.'); }
 });
 
 /* -------------------------------
    DATA: categories & options
-   (kept original + added new)
 ---------------------------------*/
 const CATEGORIES = [
+  /* Character style */
+  {
+    key: "characterStyle",
+    icon: "🧸",
+    label: "Character Style",
+    maxSelect: 1,
+    options: [
+      "hyper-realistic chibi mixed with Bratz-style",
+      "cute kawaii anime-style",
+      "Disney Pixar 3D animated",
+      "realistic portrait with chibi proportions",
+      "cartoon-style with big expressive eyes",
+      "stylized 3D render",
+      "modern digital art illustration",
+      "vintage pin-up art style"
+    ]
+  },
+  /* Pose */
   {
     key: "actionPose",
     icon: "🧍‍♀️",
@@ -415,6 +303,7 @@ const CATEGORIES = [
       "kneeling, tying shoelaces"
     ]
   },
+  /* Expression (added 'teeth' & 'kiss') */
   {
     key: "facialExpression",
     icon: "😊",
@@ -422,6 +311,8 @@ const CATEGORIES = [
     maxSelect: 2,
     options: [
       "wide open smile with dimples",
+      "big smile showing teeth",
+      "blowing a kiss with wink",
       "smirking with raised eyebrow",
       "tongue slightly out, playful",
       "eyes closed in pure joy",
@@ -429,28 +320,10 @@ const CATEGORIES = [
       "pouty lips, cute attitude",
       "serene smile, relaxed gaze",
       "laughing with sparkly eyes",
-      "wink with cheerful grin",
-      /* NEW */
-      "big smile showing teeth",
-      "blowing a kiss"
+      "wink with cheerful grin"
     ]
   },
-  {
-    key: "outfitDetails",
-    icon: "👗",
-    label: "Outfit Details",
-    maxSelect: 3,
-    options: [
-      "neon two-piece set",
-      "oversized graphic hoodie and biker shorts",
-      "sequined mini dress",
-      "cute kawaii sweater and mini skirt",
-      "cottagecore floral midi dress with fuzzy socks",
-      "streetwear crop jacket with cargo skirt",
-      "denim-on-denim fit with rhinestone details",
-      "cozy matching lounge set"
-    ]
-  },
+  /* Hair */
   {
     key: "hairstyle",
     icon: "💇🏽‍♀️",
@@ -470,21 +343,193 @@ const CATEGORIES = [
     ]
   },
   {
-    key: "characterStyle",
-    icon: "🧸",
-    label: "Character Style",
-    maxSelect: 1,
+    key: "hairDetails",
+    icon: "🎀",
+    label: "Hair Details",
+    maxSelect: 2,
     options: [
-      "hyper-realistic chibi mixed with Bratz-style",
-      "cute kawaii anime-style",
-      "Disney Pixar 3D animated",
-      "realistic portrait with chibi proportions",
-      "cartoon-style with big expressive eyes",
-      "stylized 3D render",
-      "modern digital art illustration",
-      "vintage pin-up art style"
+      "chunky gold chains (hair jewelry)",
+      "bamboo hoop earrings woven in hair",
+      "colorful hair wraps",
+      "bandana headband",
+      "90s finger waves",
+      "curtain bangs with layers",
+      "chunky highlights with face-framing"
     ]
   },
+  /* Makeup (from your screenshots) */
+  {
+    key: "makeup",
+    icon: "💄",
+    label: "Makeup",
+    maxSelect: 3,
+    options: [
+      "soft matte pink lipstick",
+      "glossy nude lips",
+      "bold red lipstick",
+      "pastel ombré eyeshadow",
+      "winged eyeliner with rhinestones",
+      "subtle peach blush",
+      "glittery eyeshadow",
+      "holographic highlighter",
+      "glossy clear lips",
+      "metallic silver lipstick"
+    ]
+  },
+  /* Tops */
+  {
+    key: "tops",
+    icon: "👚",
+    label: "Top",
+    maxSelect: 1,
+    options: [
+      "cropped varsity jacket in rose gold and white",
+      "sequined tube top",
+      "oversized graphic tee",
+      "glittery halter top",
+      "holographic windbreaker",
+      "neon cropped hoodie",
+      "silk bomber jacket",
+      "denim vest with patches",
+      "leather cropped jacket",
+      "pastel cardigan with heart buttons"
+    ]
+  },
+  /* Bottoms */
+  {
+    key: "bottoms",
+    icon: "🩳",
+    label: "Bottom",
+    maxSelect: 1,
+    options: [
+      "pleated pink mini skirt",
+      "satin joggers",
+      "denim mini skirt with rhinestones",
+      "leather pants with zippers",
+      "holographic leggings",
+      "ripped skinny jeans",
+      "sequin shorts",
+      "layered tulle skirt",
+      "plaid pleated skirt",
+      "wide-leg cargo pants"
+    ]
+  },
+  /* Shoes (expanded) */
+  {
+    key: "shoes",
+    icon: "👟",
+    label: "Shoes",
+    maxSelect: 1,
+    options: [
+      "Nike Air Force 1s",
+      "chunky sneakers",
+      "thigh-high glitter boots",
+      "wedge sandals with straps",
+      "holographic high-top sneakers",
+      "sparkly ballet flats",
+      "rhinestone Crocs",
+      "roller skates with neon wheels",
+      "furry platform boots",
+      "clear heels with jewels",
+      "lace-up boots with heart-shaped soles",
+      "combat boots with buckles",
+      "Mary Jane shoes",
+      "platform heels",
+      "strappy stiletto heels"
+    ]
+  },
+  /* Outfit add-ons */
+  {
+    key: "outfitDetails",
+    icon: "👗",
+    label: "Outfit Details",
+    maxSelect: 3,
+    options: [
+      "neon two-piece set",
+      "oversized graphic hoodie and biker shorts",
+      "sequined mini dress",
+      "cute kawaii sweater and mini skirt",
+      "cottagecore floral midi dress with fuzzy socks",
+      "streetwear crop jacket with cargo skirt",
+      "denim-on-denim fit with rhinestone details",
+      "cozy matching lounge set"
+    ]
+  },
+  /* Holiday outfits (more Halloween) */
+  {
+    key: "holidayOutfits",
+    icon: "🎃",
+    label: "Holiday Outfits",
+    maxSelect: 1,
+    options: [
+      "Halloween black cat costume with neon whiskers",
+      "Halloween witch dress with sparkly hat and striped tights",
+      "Halloween skeleton jumpsuit with glow-in-the-dark bones",
+      "Halloween pumpkin sweater with pleated skirt",
+      "Halloween vampire dress with lace gloves",
+      "Halloween zombie cheerleader with glitter pom-poms",
+      "Halloween pastel ghost onesie with bow",
+      "Christmas cozy knit sweater with reindeer and mini skirt",
+      "Christmas velvet dress with faux-fur trim and thigh-high boots",
+      "New Year’s sequin jumpsuit with metallic heels",
+      "Valentine’s pink sweater dress with heart knee-high socks",
+      "St. Patrick’s emerald blazer dress with shamrock pin",
+      "Easter pastel floral sundress with ribbon headband",
+      "Thanksgiving cozy cable-knit sweater with plaid skirt and boots",
+      "Lunar New Year red-and-gold cheongsam-inspired dress",
+      "Independence Day denim two-piece with star patches"
+    ]
+  },
+  /* Professions (kept) */
+  {
+    key: "professionOutfits",
+    icon: "🧑🏽‍⚕️",
+    label: "Profession Outfits",
+    maxSelect: 1,
+    options: [
+      "cute pink scrubs with heart patterns",
+      "stylish white doctor coat with stethoscope",
+      "chic nail tech apron with rhinestone details",
+      "artist overalls splashed with paint",
+      "barista apron with latte art pin",
+      "teacher cardigan with book patches"
+    ]
+  },
+  /* Accessories & nails */
+  {
+    key: "accessories",
+    icon: "💍",
+    label: "Accessories",
+    maxSelect: 3,
+    options: [
+      "bamboo hoop earrings",
+      "diamond studs",
+      "nose ring hoop",
+      "gold grillz",
+      "layered gold chain necklace",
+      "stacked bangles and rings",
+      "oversized sunglasses",
+      "bow headband with sparkle",
+      "jeweled tiara",
+      "cat-eye glasses"
+    ]
+  },
+  {
+    key: "nails",
+    icon: "💅",
+    label: "Nails",
+    maxSelect: 1,
+    options: [
+      "stiletto neon ombré nails",
+      "almond French tips",
+      "coffin nails with rhinestones",
+      "short natural nude nails",
+      "chrome mirror nails",
+      "matte black nail art",
+      "square pink jelly nails"
+    ]
+  },
+  /* Skin inclusivity (kept) */
   {
     key: "skinConditions",
     icon: "🌈",
@@ -501,10 +546,9 @@ const CATEGORIES = [
       "stretch marks"
     ]
   },
-
-  /* Backgrounds split into two groups per your screenshots */
+  /* Floating elements (from screenshots) */
   {
-    key: "floatingElements",
+    key: "floating",
     icon: "✨",
     label: "Floating Elements",
     maxSelect: 2,
@@ -521,8 +565,9 @@ const CATEGORIES = [
       "golden coins and gems"
     ]
   },
+  /* Background effects (from screenshots) */
   {
-    key: "backgroundEffect",
+    key: "backgroundEffects",
     icon: "🌟",
     label: "Background Effect",
     maxSelect: 1,
@@ -539,159 +584,53 @@ const CATEGORIES = [
       "iridescent waves"
     ]
   },
-
-  /* Holiday outfits (expanded) */
+  /* Background type (kept) */
   {
-    key: "holidayOutfits",
-    icon: "🎃",
-    label: "Holiday Outfits",
+    key: "background",
+    icon: "🌅",
+    label: "Background & Setting",
     maxSelect: 1,
     options: [
-      "Halloween black cat costume with neon whiskers",
-      "Halloween witch dress with sparkly hat and striped tights",
-      "Halloween skeleton jumpsuit with glow-in-the-dark bones",
-      "Halloween pumpkin sweater with pleated skirt",
-      "Halloween spiderweb dress with lace gloves",
-      "Halloween vampire queen gown with jewel choker",
-      "Halloween mummy wraps with glitter tape",
-      "Halloween zombie cheerleader uniform",
-      "Halloween pirate corset top with ruffled skirt",
-      "Halloween angel & devil mix outfit",
-      "Halloween clown jester with cute face paint",
-      "Halloween ghost sheet kawaii style",
-      "Halloween fairy witch with crystal wand",
-      "Christmas cozy knit sweater with reindeer",
-      "Christmas velvet dress with faux-fur trim",
-      "Hanukkah blue-and-silver party dress",
-      "Winter plaid skirt with turtleneck and earmuffs",
-      "Valentine’s red satin mini dress with heart purse",
-      "New Year’s sequin jumpsuit with metallic heels",
-      "Easter pastel floral sundress with ribbon headband",
-      "Independence Day denim two-piece with star patches",
-      "Thanksgiving cozy cable-knit sweater with plaid skirt",
-      "Lunar New Year red-and-gold cheongsam-inspired dress"
+      "white background",
+      "transparent background",
+      "kawaii bedroom setting",
+      "urban street mural backdrop",
+      "sparkly studio backdrop",
+      "soft bokeh lights",
+      "pink and purple gradient",
+      "gradient rainbow background"
     ]
   },
-
-  {
-    key: "professionOutfits",
-    icon: "🧑🏽‍⚕️",
-    label: "Profession Outfits",
-    maxSelect: 1,
-    options: [
-      "cute pink scrubs with heart patterns",
-      "stylish white doctor coat with stethoscope",
-      "chic nail tech apron with rhinestone details",
-      "artist overalls splashed with paint",
-      "barista apron with latte art pin",
-      "teacher cardigan with book patches"
-    ]
-  },
-
-  /* Existing extras */
-  {
-    key: "nails",
-    icon: "💅",
-    label: "Nails",
-    maxSelect: 1,
-    options: [
-      "stiletto neon ombré nails",
-      "almond French tips",
-      "coffin nails with rhinestones",
-      "short natural nude nails",
-      "chrome mirror nails",
-      "matte black nail art",
-      "square pink jelly nails"
-    ]
-  },
-  {
-    key: "accessories",
-    icon: "💍",
-    label: "Accessories",
-    maxSelect: 3,
-    options: [
-      "bamboo hoop earrings",
-      "diamond studs",
-      "nose ring hoop",
-      "gold grillz",
-      "layered gold chain necklace",
-      "stacked bangles and rings",
-      "oversized sunglasses",
-      "bow headband with sparkle"
-    ]
-  },
-  {
-    key: "shoes",
-    icon: "👟",
-    label: "Shoes",
-    maxSelect: 1,
-    options: [
-      "Nike Air Force 1s",
-      "Adidas shell toes",
-      "Reebok Classics",
-      "strappy stiletto heels",
-      "platform heels",
-      "chunky sneakers",
-      "combat boots with buckles",
-      "Mary Jane shoes"
-    ]
-  },
-  {
-    key: "hairDetails",
-    icon: "🎀",
-    label: "Hair Details",
-    maxSelect: 2,
-    options: [
-      "chunky gold chains (hair jewelry)",
-      "bamboo hoop earrings woven in hair",
-      "colorful hair wraps",
-      "bandana headband",
-      "90s finger waves",
-      "curtain bangs with layers",
-      "chunky highlights with face-framing"
-    ]
-  },
-
-  /* NEW: Pets / Animals */
+  /* New: Pets & Siblings */
   {
     key: "pets",
     icon: "🐾",
-    label: "Pets & Animals",
+    label: "Pets / Animals",
     maxSelect: 2,
     options: [
-      "small kitten sitting on shoulder",
-      "puppy on a leash",
-      "tiny dog in handbag",
-      "goldfish bowl held in hands",
-      "snake gently coiled around forearm",
-      "bunny tucked under arm",
-      "turtle in cute terrarium bowl",
+      "holding a bowl with a goldfish",
+      "small cat cuddled in arms",
+      "cute puppy on a leash",
+      "colorful parrot perched on shoulder",
+      "tiny turtle in a clear case",
+      "friendly snake gently coiled around arm",
       "hamster peeking from pocket",
-      "colorful parrot on wrist",
-      "butterflies fluttering around",
-      "frog friend on shoe",
-      "gecko on shoulder",
-      "mini dragon plush companion",
-      "unicorn plush keychain",
-      "pony/horse in background"
+      "fluffy bunny by her feet",
+      "pet lizard on her hand",
+      "butterfly swarm around her"
     ]
   },
-
-  /* NEW: Siblings */
   {
     key: "siblings",
     icon: "👭",
-    label: "Siblings (if any)",
-    maxSelect: 2,
+    label: "Sibling Add-On",
+    maxSelect: 1,
     options: [
-      "include younger sister holding hands",
-      "include older sister posing together",
-      "include younger brother holding hands",
-      "include older brother posing together",
-      "include twin sister side-by-side",
-      "include twin brother side-by-side",
-      "siblings hugging",
-      "siblings cheering together"
+      "with little sister beside her",
+      "with big sister beside her",
+      "with little brother beside her",
+      "with big brother beside her",
+      "with twin sibling posing together"
     ]
   }
 ];
@@ -722,12 +661,10 @@ function renderPickers(){
       btn.type = 'button';
       btn.textContent = opt;
       btn.dataset.value = opt;
-
       btn.addEventListener('click', ()=>{
         btn.classList.toggle('is-on');
         enforceMax(card);
       });
-
       scroll.appendChild(btn);
     });
 
@@ -740,13 +677,11 @@ renderPickers();
 function enforceMax(card){
   const max = Number(card.dataset.max || 99);
   const active = [...card.querySelectorAll('.opt.is-on')];
-  if(active.length > max){
-    active[0].classList.remove('is-on'); // remove oldest
-  }
+  if(active.length > max){ active[0].classList.remove('is-on'); }
 }
 
 /* --------------------------------
-   HELPERS: collect selections
+   HELPERS
 ---------------------------------*/
 function getSelections(){
   const selected = {};
@@ -757,10 +692,8 @@ function getSelections(){
   });
   return selected;
 }
-
-function clearSelections(){
-  grid.querySelectorAll('.opt.is-on').forEach(b=>b.classList.remove('is-on'));
-}
+function clearSelections(){ grid.querySelectorAll('.opt.is-on').forEach(b=>b.classList.remove('is-on')); }
+function pickRandom(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 
 /* --------------------------------
    GENERATION
@@ -773,15 +706,13 @@ const btnCopy   = document.getElementById('btnCopy');
 const btnGenAgain = document.getElementById('btnGenAgain');
 const btnClear  = document.getElementById('btnClear');
 
-function pickRandom(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
-
 function makeDescription(selections, poseOnly=false){
   // base randoms to fill gaps
   const rand = Object.fromEntries(CATEGORIES.map(c=>[c.key, [pickRandom(c.options)]]));
   // merge
   const picks = {};
   CATEGORIES.forEach(c=>{
-    if(poseOnly && c.key!=='actionPose'){ // freeze others for new pose
+    if(poseOnly && c.key!=='actionPose'){ // for new pose only, freeze others
       picks[c.key] = selections[c.key] || rand[c.key];
     }else{
       picks[c.key] = (selections[c.key] && selections[c.key].length ? selections[c.key] : rand[c.key]);
@@ -790,39 +721,43 @@ function makeDescription(selections, poseOnly=false){
 
   const parts = [];
 
-  // Style + subject
+  // Core identity & style
   parts.push(`${picks.characterStyle[0]} African American woman`);
 
   // Pose
   parts.push(`${picks.actionPose[0]}`);
 
-  // Expressions
+  // Expression
   if(picks.facialExpression) parts.push(`${picks.facialExpression.join(' and ')}`);
 
-  // Outfit stack
-  if(picks.professionOutfits) parts.push(`wearing ${picks.professionOutfits[0]}`);
-  if(picks.holidayOutfits) parts.push(`festive ${picks.holidayOutfits[0]}`);
-  if(picks.outfitDetails) parts.push(`plus ${picks.outfitDetails.join(', ')}`);
-
-  // Hair
+  // Hair & makeup
   if(picks.hairstyle) parts.push(`hair styled in ${picks.hairstyle[0]}`);
   if(picks.hairDetails && picks.hairDetails.length) parts.push(`with ${picks.hairDetails.join(', ')}`);
+  if(picks.makeup && picks.makeup.length) parts.push(`makeup: ${picks.makeup.join(', ')}`);
 
-  // Accessories, Nails, Shoes
-  if(picks.accessories) parts.push(`accessorized with ${picks.accessories.join(', ')}`);
-  if(picks.nails) parts.push(`${picks.nails[0]}`);
+  // Outfit stack
+  if(picks.tops) parts.push(`wearing ${picks.tops[0]}`);
+  if(picks.bottoms) parts.push(`with ${picks.bottoms[0]}`);
   if(picks.shoes) parts.push(`and ${picks.shoes[0]}`);
+  if(picks.outfitDetails && picks.outfitDetails.length) parts.push(`plus ${picks.outfitDetails.join(', ')}`);
+  if(picks.professionOutfits) parts.push(`(profession look: ${picks.professionOutfits[0]})`);
+  if(picks.holidayOutfits) parts.push(`(holiday look: ${picks.holidayOutfits[0]})`);
 
-  // Skin
+  // Accessories & nails
+  if(picks.accessories && picks.accessories.length) parts.push(`accessorized with ${picks.accessories.join(', ')}`);
+  if(picks.nails) parts.push(`${picks.nails[0]}`);
+
+  // Skin details
   if(picks.skinConditions && picks.skinConditions.length) parts.push(`skin details: ${picks.skinConditions.join(', ')}`);
 
-  // Companions
-  if(picks.siblings) parts.push(`${picks.siblings.join('')}`);
-  if(picks.pets) parts.push(`${picks.pets.join(', ')}`);
+  // Pets & siblings
+  if(picks.pets && picks.pets.length) parts.push(`${picks.pets.join(' and ')}`);
+  if(picks.siblings) parts.push(`${picks.siblings[0]}`);
 
-  // Floating & background
-  if(picks.floatingElements) parts.push(`surrounded by ${picks.floatingElements.join(' and ')}`);
-  if(picks.backgroundEffect) parts.push(`${picks.backgroundEffect[0]} background`);
+  // Floating elements & backgrounds
+  if(picks.floating && picks.floating.length) parts.push(`surrounded by ${picks.floating.join(' and ')}`);
+  if(picks.backgroundEffects) parts.push(`${picks.backgroundEffects[0]}`);
+  if(picks.background) parts.push(`${picks.background[0]}`);
 
   // Finish
   parts.push(`highly detailed face and outfit, glossy 3D look, holographic highlights, fun and expressive vibe.`);
@@ -844,41 +779,24 @@ function generate(useSelections=true, poseOnly=false){
   result.textContent = desc;
 }
 
-/* Button events */
-btnRandom.addEventListener('click', ()=>{
-  activate(btnRandom); deactivate(btnWithSel);
-  generate(false,false);
-});
-btnWithSel.addEventListener('click', ()=>{
-  activate(btnWithSel); deactivate(btnRandom);
-  generate(true,false);
-});
+/* Buttons */
+btnRandom.addEventListener('click', ()=>{ activate(btnRandom); deactivate(btnWithSel); generate(false,false); });
+btnWithSel.addEventListener('click', ()=>{ activate(btnWithSel); deactivate(btnRandom); generate(true,false); });
 btnPose.addEventListener('click', ()=> generate(true,true));
 btnGenAgain.addEventListener('click', ()=> generate(true,false));
-btnClear.addEventListener('click', ()=>{
-  clearSelections();
-  result.textContent = "Selections cleared. Pick options and generate again ✨";
-});
+btnClear.addEventListener('click', ()=>{ clearSelections(); result.textContent = "Selections cleared. Pick options and generate again ✨"; });
 btnCopy.addEventListener('click', async ()=>{
-  try{
-    await navigator.clipboard.writeText(result.textContent);
-    pulse(btnCopy, "Copied!");
-  }catch(e){
-    alert("Copy failed. Select the text and copy manually.");
-  }
+  try{ await navigator.clipboard.writeText(result.textContent); pulse(btnCopy, "Copied!"); }
+  catch(e){ alert("Copy failed. Select the text and copy manually."); }
 });
 
-/* UI helpers for the neon buttons */
+/* UI helpers */
 function activate(el){ el.classList.add('is-active'); }
 function deactivate(el){ el.classList.remove('is-active'); }
 function pulse(el, label){
   const old = el.textContent;
-  el.textContent = label;
-  el.style.filter = 'saturate(1.2) brightness(1.1)';
-  setTimeout(()=>{
-    el.textContent = old;
-    el.style.filter = '';
-  }, 950);
+  el.textContent = label; el.style.filter = 'saturate(1.2) brightness(1.1)';
+  setTimeout(()=>{ el.textContent = old; el.style.filter = ''; }, 950);
 }
 
 /* First render output */
