@@ -4,15 +4,15 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Elle & East Luxe — Chibi Character Prompt Generator</title>
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cinzel:wght@700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cinzel:wght@600;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 
 <style>
   :root{
     --pink:#ff4da6; --hotpink:#ff3f9b; --white:#ffffff; --purple:#9b4dff;
     --bgA:#ff6ea7; --bgB:#ffe9f3; --ink:#222;
   }
-  *{ box-sizing:border-box }
-  html,body{ height:100% }
+  *{box-sizing:border-box}
+  html,body{height:100%}
   body{
     margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; color:var(--ink);
     background:
@@ -20,63 +20,62 @@
       linear-gradient(180deg, var(--bgA) 0%, var(--bgB) 100%);
     background-attachment:fixed;
   }
-  .wrap{ max-width:1180px; margin:auto; padding:28px 18px 120px }
-  .brandRow{ display:flex; align-items:center; gap:16px; flex-wrap:wrap; justify-content:center; text-align:center; margin-bottom:6px }
-  .logoScript{ font-family:"Great Vibes",cursive; font-size:44px; color:#fff; text-shadow:0 2px 0 rgba(0,0,0,.05),0 0 18px rgba(255,255,255,.55) }
-  .logoCaps{ font-family:"Cinzel",serif; font-weight:700; font-size:16px; letter-spacing:8px; color:#fff; margin-left:6px; text-shadow:0 0 14px rgba(255,255,255,.6) }
-  .headline{ color:#fff; text-align:center; text-shadow:0 1px 0 rgba(0,0,0,.08),0 0 10px rgba(255,255,255,.6) }
-  .headline h1{ margin:0 0 4px; font-size:34px; font-weight:800 }
-  .headline p{ margin:0; opacity:.95; font-weight:600 }
+  .wrap{max-width:1180px;margin-inline:auto;padding:28px 18px 120px}
 
+  /* Brand / header */
+  .brandRow{display:flex;align-items:center;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:6px}
+  .logoScript{font-family:"Great Vibes",cursive;font-size:44px;line-height:1;color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.05),0 0 18px rgba(255,255,255,.55)}
+  .logoCaps{font-family:"Cinzel",serif;font-weight:700;font-size:16px;letter-spacing:8px;color:#fff;margin-left:6px;opacity:.95;text-shadow:0 0 14px rgba(255,255,255,.6)}
+  .headline{color:#fff;text-align:center;text-shadow:0 1px 0 rgba(0,0,0,.08),0 0 10px rgba(255,255,255,.6)}
+  .headline h1{margin:0 0 4px;font-size:34px;font-weight:800}
+  .headline p{margin:0;opacity:.95;font-weight:600}
+
+  /* Buttons */
   .btn{
     --from: var(--pink); --to: var(--white);
-    display:inline-flex; align-items:center; gap:10px; border:none; cursor:pointer; padding:13px 26px; border-radius:28px;
-    font-weight:800; color:#fff; text-shadow:0 0 6px rgba(255,255,255,.9);
+    display:inline-flex;align-items:center;gap:10px;border:none;cursor:pointer;padding:13px 26px;border-radius:28px;
+    font-weight:800;color:#fff;text-shadow:0 0 6px rgba(255,255,255,.9);
     background:linear-gradient(45deg,var(--from),var(--to));
     box-shadow:0 0 0 2px rgba(255,255,255,.25) inset,0 0 18px rgba(255,77,166,.7),0 0 28px rgba(255,255,255,.85);
     transition:transform .18s,box-shadow .2s,filter .2s,background .25s;
   }
-  .btn:hover{ transform:translateY(-1px) scale(1.03); filter:saturate(1.08) }
-  .btn.is-active{ --from:#9b4dff; --to:#ff4da6 }
-  .btn--copy{ --from:#ff7fbc; --to:#ffbddc }
-  .btn--gen { --from:#ffb84d; --to:#fff0c9; color:#342100; text-shadow:none }
-  .btn--pose{ --from:#6aa8ff; --to:#e1edff }
-  .btn--clear{ --from:#ff5f6d; --to:#ffc371 }
+  .btn:hover{transform:translateY(-1px) scale(1.03); filter:saturate(1.08)}
+  .btn.is-active{--from:#9b4dff; --to:#ff4da6}
+  .actionsTop{display:flex;gap:14px;flex-wrap:wrap;margin:18px 0 12px;justify-content:center}
 
+  /* Cards / layout */
   .card{
     background:linear-gradient(180deg,#ffffffcc,#fff8fdcc);
-    border-radius:18px; padding:16px 18px;
+    border-radius:18px;padding:16px 18px;
     box-shadow:0 8px 30px rgba(255,77,166,.18), 0 2px 0 rgba(255,255,255,.7) inset;
     border:1px solid rgba(255,255,255,.65); backdrop-filter: blur(4px);
   }
+  .howTo{margin:12px 0 18px;color:#fff}
+  .howTo .card{color:#41283a}
 
-  .howTo{ margin:12px 0 18px; color:#fff }
-  .howTo .card{ color:#41283a }
-  .actionsTop{ display:flex; gap:14px; flex-wrap:wrap; margin:18px 0 12px; justify-content:center }
+  .output{margin-top:10px}
+  .output h3{margin:6px 0 10px;text-align:center}
+  .box{background:#fff;border-radius:12px;padding:14px;border:2px dashed rgba(255,77,166,.3)}
+  .secondary{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;justify-content:center}
+  .btn--copy{--from:#ff7fbc;--to:#ffbddc}
+  .btn--gen{--from:#ffb84d;--to:#fff0c9;color:#342100;text-shadow:none}
+  .btn--pose{--from:#6aa8ff;--to:#e1edff}
+  .btn--clear{--from:#ff5f6d;--to:#ffc371}
 
-  .output{ margin-top:10px }
-  .output h3{ margin:6px 0 10px; text-align:center }
-  .output .box{ background:#fff; border-radius:12px; padding:14px; border:2px dashed rgba(255,77,166,.3) }
-  .output .secondary{ display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; justify-content:center }
+  /* Picker grid */
+  .grid{display:grid;grid-template-columns:repeat(2,minmax(280px,1fr));gap:18px;margin-top:18px}
+  @media(min-width:980px){.grid{grid-template-columns:repeat(3,minmax(280px,1fr))}}
+  .picker{background:#fffdfd;border:1px solid rgba(255,255,255,.7);border-radius:16px;padding:12px;box-shadow:0 8px 20px rgba(255,165,210,.2),0 1px 0 rgba(255,255,255,.85) inset}
+  .picker h4{margin:2px 0 10px;display:flex;align-items:center;gap:8px;font-weight:800}
+  .scroll{display:flex;flex-direction:column;gap:8px;max-height:180px;overflow:auto;padding-right:4px}
+  .scroll::-webkit-scrollbar{width:10px}
+  .scroll::-webkit-scrollbar-track{background:linear-gradient(180deg,#ffe1f2,#fff);border-radius:10px}
+  .scroll::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#ffd2eb,#ffffff);border-radius:10px;border:2px solid #fff;box-shadow:0 0 10px rgba(255,77,166,.5)}
+  .opt{border:none;border-radius:12px;padding:10px 12px;text-align:left;background:linear-gradient(180deg,#fff,#fff5fb);color:#3d2232;font-weight:600;cursor:pointer;box-shadow:0 0 0 2px #ffe6f3 inset,0 2px 6px rgba(0,0,0,.04);transition:transform .12s,box-shadow .2s,background .25s,color .25s}
+  .opt:hover{transform:translateY(-1px)}
+  .opt.is-on{background:linear-gradient(180deg,#ffdff0,#fff);box-shadow:0 0 0 2px var(--pink) inset,0 0 18px rgba(255,77,166,.35);color:#8b1d5a}
 
-  .grid{ display:grid; grid-template-columns:repeat(2,minmax(280px,1fr)); gap:18px; margin-top:18px }
-  @media(min-width:980px){ .grid{ grid-template-columns:repeat(3,minmax(280px,1fr)) } }
-
-  .picker{ background:#fffdfd; border:1px solid rgba(255,255,255,.7); border-radius:16px; padding:12px;
-           box-shadow:0 8px 20px rgba(255,165,210,.2),0 1px 0 rgba(255,255,255,.85) inset }
-  .picker h4{ margin:2px 0 10px; display:flex; align-items:center; gap:8px; font-weight:800 }
-  .scroll{ display:flex; flex-direction:column; gap:8px; max-height:180px; overflow:auto; padding-right:4px }
-  .scroll::-webkit-scrollbar{ width:10px }
-  .scroll::-webkit-scrollbar-track{ background:linear-gradient(180deg,#ffe1f2,#fff); border-radius:10px }
-  .scroll::-webkit-scrollbar-thumb{ background:linear-gradient(180deg,#ffd2eb,#ffffff); border-radius:10px; border:2px solid #fff; box-shadow:0 0 10px rgba(255,77,166,.5) }
-  .opt{ border:none; border-radius:12px; padding:10px 12px; text-align:left;
-        background:linear-gradient(180deg,#fff,#fff5fb); color:#3d2232; font-weight:600; cursor:pointer;
-        box-shadow:0 0 0 2px #ffe6f3 inset,0 2px 6px rgba(0,0,0,.04);
-        transition:transform .12s,box-shadow .2s,background .25s,color .25s }
-  .opt:hover{ transform:translateY(-1px) }
-  .opt.is-on{ background:linear-gradient(180deg,#ffdff0,#fff); box-shadow:0 0 0 2px var(--pink) inset,0 0 18px rgba(255,77,166,.35); color:#8b1d5a }
-  .helper{ color:#fff; font-weight:700; opacity:.9; margin-bottom:6px; text-shadow:0 0 8px rgba(255,255,255,.6); text-align:center }
-  .footer{ margin-top:26px; color:#fff; opacity:.9; font-size:14px; text-align:center }
+  .helper{color:#fff;font-weight:700;opacity:.9;margin-bottom:6px;text-shadow:0 0 8px rgba(255,255,255,.6);text-align:center}
 </style>
 </head>
 <body>
@@ -95,15 +94,15 @@
     <section class="howTo">
       <div class="card">
         <strong>How to Use</strong>
-        <ul style="margin:8px 0 0 18px;">
-          <li><b>Quick Generate</b>: Click <i>Generate Random Character</i> for curated combos.</li>
-          <li><b>Custom Selection</b>: Pick options, then click <i>Generate with My Selections</i> (strict mode).</li>
-          <li><b>New Pose Only</b>: Changes only the pose, keeps everything else the same.</li>
+        <ul style="margin:8px 0 0 18px">
+          <li><b>Quick Generate</b>: Click <i>Generate Random Character</i> for instant results.</li>
+          <li><b>Custom Selection</b>: Pick options, then click <i>Generate with My Selections</i>.</li>
+          <li><b>New Pose Only</b>: Changes pose but keeps everything else.</li>
         </ul>
       </div>
     </section>
 
-    <!-- Actions -->
+    <!-- Primary actions -->
     <div class="actionsTop">
       <button class="btn" id="btnRandom">🎲 Generate Random Character</button>
       <button class="btn is-active" id="btnWithSelections">✨ Generate with My Selections</button>
@@ -111,9 +110,9 @@
     <div class="helper">Select options below, then use “Generate with My Selections”.</div>
 
     <!-- Output -->
-    <section class="output card">
+    <section class="card output">
       <h3>Your Generated Character:</h3>
-      <div class="box" id="result">Pick a few options and click a generate button ✨</div>
+      <div id="result" class="box">Pick a few options and click a generate button ✨</div>
       <div class="secondary">
         <button class="btn btn--copy" id="btnCopy">📋 Copy Description</button>
         <button class="btn btn--gen"  id="btnGenAgain">⚡ Generate Prompt</button>
@@ -124,174 +123,308 @@
 
     <!-- Pickers -->
     <section class="grid" id="pickerGrid"></section>
-
-    <div class="footer">© Elle &amp; East Luxe — Prompt generator crafted for your brand.</div>
   </div>
 
 <script>
-/* =========================================================
-   DATA — Categories & Options
-========================================================= */
+/* ===========================
+   CATEGORY DATA
+=========================== */
 const CATEGORIES = [
   { key:"characterStyle", icon:"🧸", label:"Character Style", maxSelect:1, options:[
     "hyper-realistic chibi mixed with Bratz-style",
-    "cute kawaii anime-style chibi",
-    "stylized 3D chibi render",
-    "cartoon chibi with big expressive eyes"
+    "cute kawaii anime-style",
+    "stylized glossy 3D render",
+    "Disney-Pixar inspired 3D",
+    "cartoon style with big expressive eyes"
   ]},
-  { key:"actionPose", icon:"🕺", label:"Action / Pose", maxSelect:1, options:[
-    "standing casually forward","walking casually forward","hands on hips, confident","one hand waving hello",
-    "sitting cross-legged on floor","lying on tummy, feet up, playful","peace sign with right hand",
-    "arms crossed with smirk","jumping with joy","kneeling, tying shoelaces"
+
+  { key:"actionPose", icon:"🧍‍♀️", label:"Action / Pose", maxSelect:1, options:[
+    "standing casually forward",
+    "walking casually forward",
+    "hands on hips, confident",
+    "one hand waving hello",
+    "sitting cross-legged on floor",
+    "lying on tummy, feet up, playful",
+    "jumping with joy",
+    "peace sign with right hand",
+    "arms crossed with smirk",
+    "kneeling to tie shoelaces"
   ]},
-  { key:"facialExpression", icon:"😊", label:"Expression", maxSelect:2, options:[
-    "wide open smile with dimples","smirking with raised eyebrow","tongue slightly out, playful",
-    "eyes closed in pure joy","soft smile, gentle eyes","pouty lips, cute attitude",
-    "serene smile, relaxed gaze","laughing with sparkly eyes","wink with cheerful grin"
+
+  { key:"facialExpression", icon:"😊", label:"Facial Expression", maxSelect:2, options:[
+    "wide open smile with dimples",
+    "smile showing teeth",
+    "blowing a kiss",
+    "smirking with raised eyebrow",
+    "tongue slightly out, playful",
+    "eyes closed in pure joy",
+    "soft smile, gentle eyes",
+    "pouty lips, cute attitude",
+    "serene smile, relaxed gaze",
+    "laughing with sparkly eyes",
+    "wink with cheerful grin"
   ]},
+
   { key:"hairstyle", icon:"💇🏽‍♀️", label:"Hairstyle", maxSelect:1, options:[
-    "silk press","finger coils","two-strand twists","cornrows with designs","fulani braids","micro braids",
-    "low ponytail with multicolored beads","space buns with curly bangs","voluminous curls with side part",
+    "silk press",
+    "finger coils",
+    "two-strand twists",
+    "cornrows with designs",
+    "fulani braids",
+    "micro braids",
+    "low ponytail with multicolored beads",
+    "space buns with curly bangs",
+    "voluminous curls with side part",
     "sleek high ponytail with edges laid"
   ]},
+
   { key:"hairDetails", icon:"🎀", label:"Hair Details", maxSelect:2, options:[
-    "chunky gold hair chains (hair jewelry)","colorful hair wraps","bandana headband",
-    "90s finger waves","curtain bangs with layers","chunky highlights with face-framing"
+    "chunky gold hair chains (hair jewelry)",
+    "colorful hair wraps",
+    "bandana headband",
+    "90s finger waves",
+    "curtain bangs with layers",
+    "chunky highlights with face-framing pieces",
+    "beaded accents"
   ]},
-  { key:"nails", icon:"💅", label:"Nails", maxSelect:1, options:[
-    "stiletto neon ombré nails","almond French tips","coffin nails with rhinestones","short natural nude nails",
-    "chrome mirror nails","matte black nail art","square pink jelly nails"
-  ]},
-  { key:"accessories", icon:"💍", label:"Accessories", maxSelect:3, options:[
-    "bamboo hoop earrings","diamond studs","nose ring hoop","layered gold chain necklace",
-    "stacked bangles and rings","oversized sunglasses","bow headband with sparkle","gold ‘faith’ bracelet"
-  ]},
-  { key:"shoes", icon:"👟", label:"Shoes", maxSelect:1, options:[
-    "Nike Air Force 1s","Adidas shell toes","Reebok Classics","strappy stiletto heels","platform heels",
-    "chunky sneakers","combat boots with buckles","Mary Jane shoes"
-  ]},
+
+  /* UPDATED — Outfits */
   { key:"outfitDetails", icon:"👗", label:"Outfit Details", maxSelect:3, options:[
-    "oversized graphic hoodie and biker shorts","neon two-piece set","sequined mini dress","kawaii sweater and mini skirt",
-    "cottagecore floral midi dress with fuzzy socks","streetwear crop jacket with cargo skirt",
-    "denim-on-denim fit with rhinestones","cozy matching lounge set"
+    // athleisure & sets
+    "sparkly rhinestone jogger set with cropped hoodie",
+    "velour tracksuit with glitter piping",
+    "matching ribbed lounge set (top and flared pants)",
+    "athleisure romper with side stripes",
+    "cropped varsity jacket and joggers",
+    "denim-on-denim set with pearl trim",
+    "cargo parachute pants with fitted baby tee",
+
+    // dresses
+    "satin slip dress with lace trim",
+    "skater dress with heart cutout",
+    "sweater dress with thigh-high socks",
+    "ruffled tiered mini dress",
+    "bodycon dress with rhinestone straps",
+    "maxi sundress with smocked bodice",
+
+    // skirts
+    "pleated tennis skirt and cropped cardigan",
+    "tulle tutu skirt with glitter specks",
+    "leather mini skirt with chain belt",
+    "denim skirt with rhinestone fringe",
+    "plaid skirt with oversized bow",
+
+    // cute tops & layers
+    "oversized graphic hoodie and biker shorts",
+    "cottagecore floral blouse with puff sleeves",
+    "cropped cable-knit cardigan with pearl buttons",
+    "sequin bomber jacket over baby tee",
+    "off-shoulder top with lace sleeves",
+
+    // cozy / street legacy items
+    "cozy matching lounge set",
+    "streetwear crop jacket with cargo skirt",
+    "neon two-piece set",
+    "cute kawaii sweater and mini skirt",
+    "sequined mini dress"
   ]},
-  { key:"holidayOutfits", icon:"🎃", label:"Holiday Outfits", maxSelect:1, options:[
-    "Halloween black cat costume with neon whiskers","Halloween witch dress with sparkly hat and striped tights",
-    "Halloween skeleton jumpsuit with glow-in-the-dark bones","Halloween pumpkin sweater with pleated skirt",
-    "Christmas cozy knit sweater with reindeer","Christmas velvet dress with faux-fur trim",
-    "Valentine’s pink sweater dress with heart knee-high socks","New Year’s sequin jumpsuit with metallic heels",
-    "St. Patrick’s emerald blazer dress with shamrock pin","Easter pastel floral sundress with ribbon headband",
+
+  { key:"professionOutfits", icon:"🧑🏽‍⚕️", label:"Profession / Role", maxSelect:1, options:[
+    "pink scrubs with heart patterns (nurse vibe)",
+    "white lab coat with stethoscope (doctor vibe)",
+    "nail tech apron with rhinestones",
+    "artist overalls splashed with paint",
+    "barista apron with latte art pin",
+    "teacher cardigan with book patches"
+  ]},
+
+  { key:"holidayOutfits", icon:"🎉", label:"Seasonal / Holiday Fit", maxSelect:1, options:[
+    "Halloween black cat costume with neon whiskers",
+    "Halloween witch dress with sparkly hat and striped tights",
+    "Halloween skeleton jumpsuit with glow-in-the-dark bones",
+    "Halloween pumpkin sweater with pleated skirt",
+    "Christmas cozy knit sweater with reindeer",
+    "New Year’s sequin jumpsuit with metallic heels",
+    "Valentine’s pink sweater dress with heart knee-high socks",
+    "St. Patrick’s emerald blazer dress with shamrock pin",
+    "Easter pastel floral sundress with ribbon headband",
     "Lunar New Year red-and-gold cheongsam-inspired dress"
   ]},
-  { key:"professionOutfits", icon:"🧑🏽‍⚕️", label:"Profession / Work", maxSelect:1, options:[
-    "cute pink scrubs with heart patterns","white doctor coat with stethoscope","nail tech apron with rhinestones",
-    "artist overalls splashed with paint","barista apron with latte art pin","teacher cardigan with book patches"
+
+  { key:"nails", icon:"💅", label:"Nails", maxSelect:1, options:[
+    "stiletto neon ombré nails",
+    "almond French tips",
+    "coffin nails with rhinestones",
+    "short natural nude nails",
+    "chrome mirror nails",
+    "matte black nail art",
+    "square pink jelly nails"
   ]},
+
+  { key:"accessories", icon:"💍", label:"Accessories", maxSelect:3, options:[
+    "bamboo hoop earrings",
+    "diamond studs",
+    "nose ring hoop",
+    "gold grillz",
+    "layered gold chain necklace",
+    "stacked bangles and rings",
+    "oversized sunglasses",
+    "bow headband with sparkle"
+  ]},
+
+  { key:"shoes", icon:"👟", label:"Shoes", maxSelect:1, options:[
+    "Nike Air Force 1s",
+    "Adidas shell toes",
+    "chunky sneakers",
+    "platform heels",
+    "strappy stiletto heels",
+    "combat boots with buckles",
+    "Mary Jane shoes"
+  ]},
+
   { key:"skinDetails", icon:"🌈", label:"Skin Details", maxSelect:3, options:[
-    "prominent vitiligo pattern clearly visible",
+    "beautiful vitiligo patterns (clearly visible)",
     "soft freckles across nose and cheeks",
-    "healed keloid scars",
-    "surgical scar",
-    "burn scar (healed)",
     "psoriasis patches",
-    "rosacea blush on cheeks",
+    "rosacea on cheeks",
+    "keloid scars",
+    "surgical scars",
     "stretch marks"
   ]},
-  { key:"background", icon:"🌅", label:"Background & Setting", maxSelect:1, options:[
-    "white background","transparent background","soft bokeh lights background","pink and purple gradient",
-    "sparkly studio backdrop","city street with shopping bags","kawaii bedroom setting","beach boardwalk at sunset"
+
+  { key:"background", icon:"🌅", label:"Background / Setting", maxSelect:1, options:[
+    "white background",
+    "transparent background",
+    "pink and purple gradient",
+    "soft bokeh lights",
+    "sparkly studio backdrop",
+    "city street with shopping bags",
+    "kawaii bedroom setting",
+    "beach boardwalk at sunset"
   ]},
-  { key:"relationships", icon:"💞", label:"Relationships", maxSelect:1, options:[
-    "with her boyfriend (both in the same chibi style, affectionate but wholesome pose)",
-    "with her girlfriend (both in the same chibi style, holding hands)",
-    "mother and daughter (both matching chibi style, cute hugs)",
-    "father and daughter (both matching chibi style, playful pose)",
-    "best friends duo (both matching chibi style, fun pose)"
+
+  /* Relatable / Personalization */
+  { key:"seasonalMood", icon:"🍂", label:"Seasonal Mood", maxSelect:1, options:[
+    "cozy fall vibes with pumpkins",
+    "winter wonderland, fluffy scarf and cocoa",
+    "spring blossoms in the air",
+    "bright summer beach day with sunscreen glow"
   ]},
-  { key:"siblingsCompanions", icon:"👨‍👩‍👧‍👦", label:"Siblings / Companions", maxSelect:2, options:[
-    "little sister in matching chibi style","big sister in matching chibi style",
-    "little brother in matching chibi style","twin sister duo, matching outfits"
+
+  { key:"emotionsEnergy", icon:"💖", label:"Emotions & Energy", maxSelect:2, options:[
+    "confident, boss energy",
+    "calm and cozy",
+    "dreamy and soft",
+    "joyful and bubbly",
+    "focused and productive",
+    "bold and fearless"
   ]},
+
+  { key:"hobbies", icon:"🎨", label:"Hobbies", maxSelect:2, options:[
+    "sketching in a pastel notebook",
+    "journaling with cute stickers",
+    "reading a romance novel",
+    "gaming with handheld console",
+    "dancing practice",
+    "photography with a tiny camera"
+  ]},
+
+  { key:"foodDrinks", icon:"🥤", label:"Food & Drinks", maxSelect:1, options:[
+    "iced coffee with whipped cream",
+    "bubble tea with heart straw",
+    "fresh fruit smoothie",
+    "cotton candy treat",
+    "charcuterie snack box"
+  ]},
+
+  { key:"musicHeadphones", icon:"🎧", label:"Music / Headphones", maxSelect:1, options:[
+    "over-ear noise-canceling headphones",
+    "cute cat-ear headphones",
+    "karaoke mic in hand",
+    "vinyl record aesthetic"
+  ]},
+
+  { key:"relationships", icon:"👨‍👩‍👧", label:"Relationships", maxSelect:1, options:[
+    "with her mom — both in the same chibi style, smiling together",
+    "with her dad — both matching chibi style, warm and protective",
+    "with her sister — playful chibi sisters posing together",
+    "with her brother — cool chibi siblings, laughing",
+    "with her girlfriend — affectionate chibi couple, holding hands",
+    "with her boyfriend — cute chibi couple, arm-in-arm"
+  ]},
+
   { key:"pets", icon:"🐾", label:"Pets", maxSelect:1, options:[
-    "small golden retriever puppy on a leash","tiny French bulldog with bow collar",
-    "pomeranian with tutu","kitten with butterfly bow","bunny in carrot hoodie"
+    "small golden retriever puppy on a leash",
+    "tiny French bulldog with bow collar",
+    "fluffy white kitten",
+    "holding a bowl with a goldfish",
+    "friendly corn snake gently wrapped around wrist"
   ]},
-  { key:"selfCare", icon:"🧖🏽‍♀️", label:"Self-Care", maxSelect:2, options:[
-    "spa day with under-eye patches","journaling in a pastel notebook","cozy tea mug and blanket","meditation pose with soft aura"
+
+  { key:"selfCare", icon:"🧖🏽‍♀️", label:"Self-Care / Wellness", maxSelect:1, options:[
+    "spa headband and face mask moment",
+    "cozy robe with hot tea",
+    "holding a small devotional journal",
+    "yoga mat and water bottle"
   ]},
+
   { key:"travel", icon:"🧳", label:"Travel", maxSelect:1, options:[
-    "airport scene with rolling suitcase","Paris street near the Eiffel Tower","tropical resort poolside","road-trip gas-station aesthetic"
+    "airport fit with carry-on",
+    "passport and boarding pass in hand",
+    "Paris street café table",
+    "tropical vacation resort walkway"
   ]},
-  { key:"school", icon:"📚", label:"School", maxSelect:1, options:[
-    "study desk with pastel stationery","college campus lawn with backpack","locker hallway with cute keychain"
+
+  { key:"schoolWork", icon:"📚", label:"School / Work", maxSelect:1, options:[
+    "study desk with pastel stationery",
+    "laptop bag and iced coffee",
+    "whiteboard planner and markers",
+    "teacher lanyard and gradebook"
   ]},
-  { key:"worklife", icon:"💼", label:"Work / Business", maxSelect:1, options:[
-    "laptop bag and iced coffee","pop-up shop booth with banner","photo shoot backdrop with ring light"
+
+  /* Inclusive representation */
+  { key:"neurodiversity", icon:"♾️", label:"Neurodiversity Representation", maxSelect:2, options:[
+    "holding a fidget toy (autism representation)",
+    "noise-canceling headphones for sensory comfort",
+    "autism infinity symbol charm (subtle accessory)"
   ]},
-  { key:"confidence", icon:"✨", label:"Confidence / Vibe", maxSelect:1, options:[
-    "glam glow, confident posture","playful energy, expressive vibe","boss energy, poised stance"
-  ]},
-  { key:"faith", icon:"🕊️", label:"Faith", maxSelect:1, options:[
-    "subtle cross necklace","small devotional journal","soft radiant aura"
+
+  { key:"accessibility", icon:"🦾", label:"Accessibility", maxSelect:1, options:[
+    "stylish wheelchair pose",
+    "sleek prosthetic leg with decals",
+    "hearing aids, proudly visible"
   ]}
 ];
 
-/* ---------------- Curated Random Themes ---------------- */
-const THEMES = [
-  { name:"Streetwear City", picks:{
-      characterStyle:"hyper-realistic chibi mixed with Bratz-style",
-      outfitDetails:["oversized graphic hoodie and biker shorts"],
-      shoes:"chunky sneakers", background:"city street with shopping bags",
-      confidence:"boss energy, poised stance"
-  }},
-  { name:"Cozy Kawaii", picks:{
-      characterStyle:"cute kawaii anime-style chibi",
-      outfitDetails:["kawaii sweater and mini skirt"],
-      shoes:"Mary Jane shoes", background:"kawaii bedroom setting",
-      confidence:"playful energy, expressive vibe"
-  }},
-  { name:"Holiday Magic", picks:{
-      characterStyle:"stylized 3D chibi render",
-      holidayOutfits:"Christmas cozy knit sweater with reindeer",
-      background:"soft bokeh lights background", confidence:"glam glow, confident posture"
-  }},
-  { name:"Beach Day", picks:{
-      characterStyle:"stylized 3D chibi render",
-      outfitDetails:["cozy matching lounge set"],
-      shoes:"platform heels", background:"beach boardwalk at sunset",
-      travel:"tropical resort poolside"
-  }}
-];
-
-/* ---------------- Render UI ---------------- */
+/* ===========================
+   RENDER PICKERS
+=========================== */
 const grid = document.getElementById('pickerGrid');
+
 function renderPickers(){
   grid.innerHTML = '';
   CATEGORIES.forEach(cat=>{
-    const card = document.createElement('div');
-    card.className = 'picker';
-    card.dataset.key = cat.key;
-    card.dataset.max = cat.maxSelect;
+    const wrap = document.createElement('div');
+    wrap.className = 'picker';
+    wrap.dataset.key = cat.key;
+    wrap.dataset.max = cat.maxSelect;
 
     const h4 = document.createElement('h4');
     h4.innerHTML = `${cat.icon} ${cat.label}`;
-    card.appendChild(h4);
+    wrap.appendChild(h4);
 
     const scroll = document.createElement('div');
     scroll.className = 'scroll';
 
     cat.options.forEach(opt=>{
-      const btn = document.createElement('button');
-      btn.className = 'opt'; btn.type='button'; btn.textContent = opt; btn.dataset.value = opt;
-      btn.addEventListener('click', ()=>{
-        btn.classList.toggle('is-on');
-        enforceMax(card);
-      });
-      scroll.appendChild(btn);
+      const b = document.createElement('button');
+      b.type='button'; b.className='opt'; b.textContent=opt; b.dataset.value=opt;
+      b.addEventListener('click', ()=>{ b.classList.toggle('is-on'); enforceMax(wrap); });
+      scroll.appendChild(b);
     });
 
-    card.appendChild(scroll);
-    grid.appendChild(card);
+    wrap.appendChild(scroll);
+    grid.appendChild(wrap);
   });
 }
 renderPickers();
@@ -301,6 +434,7 @@ function enforceMax(card){
   const active = [...card.querySelectorAll('.opt.is-on')];
   if(active.length > max){ active[0].classList.remove('is-on'); }
 }
+
 function getSelections(){
   const selected = {};
   grid.querySelectorAll('.picker').forEach(p=>{
@@ -312,135 +446,154 @@ function getSelections(){
 }
 function clearSelections(){ grid.querySelectorAll('.opt.is-on').forEach(b=>b.classList.remove('is-on')); }
 
-/* ---------------- Description Builder ---------------- */
-function styleLabel(styleArr){ return styleArr?.length ? styleArr[0] : "the same chibi style"; }
-
-function buildSkinText(arr){
-  if(!arr || !arr.length) return "";
-  const features = arr.join(', ');
-  const hasVitiligo = arr.some(s=>/vitiligo/i.test(s));
-  const base = `include ALL of these skin features: ${features}. Make them clearly visible and well-defined; do not omit, soften, or remove any selected skin detail.`;
-  const vitBoost = hasVitiligo
-    ? " Ensure vitiligo is prominent with high contrast; place patches on the face (around eyes and mouth) and hands where visible."
-    : "";
-  return base + vitBoost;
-}
-
-function describeStrict(p){
-  const parts = [];
-  if (p.characterStyle) parts.push(`${p.characterStyle[0]} African American woman`);
-
-  if (p.actionPose) parts.push(p.actionPose[0]);
-  if (p.facialExpression) parts.push(p.facialExpression.join(' and '));
-
-  if (p.hairstyle) parts.push(`hair styled in ${p.hairstyle[0]}`);
-  if (p.hairDetails) parts.push(`with ${p.hairDetails.join(', ')}`);
-
-  if (p.professionOutfits) parts.push(`wearing ${p.professionOutfits[0]}`);
-  if (p.holidayOutfits) parts.push(`festive ${p.holidayOutfits[0]}`);
-  if (p.outfitDetails) parts.push(`plus ${p.outfitDetails.join(', ')}`);
-
-  if (p.accessories) parts.push(`accessorized with ${p.accessories.join(', ')}`);
-  if (p.nails) parts.push(p.nails[0]);
-  if (p.shoes) parts.push(`and ${p.shoes[0]}`);
-
-  // Relationships / companions in SAME style:
-  if (p.relationships) parts.push(`${p.relationships[0]} — ensure all characters share ${styleLabel(p.characterStyle)}.`);
-  if (p.siblingsCompanions) parts.push(`${p.siblingsCompanions.join(', ')} — match ${styleLabel(p.characterStyle)}.`);
-  if (p.pets) parts.push(`with ${p.pets[0]}`);
-
-  if (p.selfCare) parts.push(p.selfCare.join(', '));
-  if (p.travel) parts.push(p.travel[0]);
-  if (p.school) parts.push(p.school[0]);
-  if (p.worklife) parts.push(p.worklife[0]);
-  if (p.confidence) parts.push(p.confidence[0]);
-  if (p.faith) parts.push(p.faith[0]);
-
-  // >>> STRONG skin features instruction (NEW)
-  const skin = buildSkinText(p.skinDetails);
-  if (skin) parts.push(skin);
-
-  if (p.background) parts.push(`${p.background[0]} background`);
-
-  parts.push(`highly detailed face and outfit, glossy 3D look, holographic highlights, fun and expressive vibe.`);
-  return tidy(parts.join(', '));
-}
-
-function tidy(text){
-  return text.replace(/\s+,/g,',').replace(/,\s+\./g,'.').replace(/\s+/g,' ').trim();
-}
-
-/* ---------------- Generation Logic ---------------- */
+/* ===========================
+   GENERATION
+=========================== */
 const result = document.getElementById('result');
-const btnRandom    = document.getElementById('btnRandom');
-const btnWithSel   = document.getElementById('btnWithSelections');
-const btnPose      = document.getElementById('btnPose');
-const btnCopy      = document.getElementById('btnCopy');
-const btnGenAgain  = document.getElementById('btnGenAgain');
-const btnClear     = document.getElementById('btnClear');
+const btnRandom = document.getElementById('btnRandom');
+const btnWithSel = document.getElementById('btnWithSelections');
+const btnPose   = document.getElementById('btnPose');
+const btnCopy   = document.getElementById('btnCopy');
+const btnGenAgain = document.getElementById('btnGenAgain');
+const btnClear  = document.getElementById('btnClear');
 
 function pickRandom(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
-function oneOf(key){ const cat=CATEGORIES.find(c=>c.key===key); return cat? pickRandom(cat.options):null; }
 
-function generateStrict(){
-  const sel = getSelections();
-  if(!Object.keys(sel).length){
-    result.textContent = "Select options first, then click Generate with My Selections ✨";
-    return;
+/* utility: pretty join with “and” */
+function joinNice(list){
+  if(!list || list.length===0) return '';
+  if(list.length===1) return list[0];
+  return list.slice(0,-1).join(', ') + ' and ' + list[list.length-1];
+}
+
+/* Build sentence from picks */
+function makeDescription(selections, poseOnly=false){
+  const selectedKeys = Object.keys(selections);
+
+  if(poseOnly){
+    if(!selections.actionPose){
+      const opt = CATEGORIES.find(c=>c.key==='actionPose').options;
+      selections.actionPose = [pickRandom(opt)];
+    }
   }
-  result.textContent = describeStrict(sel);
-}
 
-function generatePoseOnly(){
-  const sel = getSelections();
-  sel.actionPose = [ oneOf('actionPose') ];
-  result.textContent = describeStrict(sel);
-}
-
-function generateRandom(){
-  const theme = pickRandom(THEMES);
+  const needRandomBase = selectedKeys.length===0;
   const base = {};
-  for(const [k,v] of Object.entries(theme.picks)){
-    base[k] = Array.isArray(v) ? v : [v];
+  if(needRandomBase){
+    const get = k => pickRandom(CATEGORIES.find(c=>c.key===k).options);
+    base.characterStyle = [get('characterStyle')];
+    base.actionPose     = [get('actionPose')];
+    base.hairstyle      = [get('hairstyle')];
+    base.outfitDetails  = [get('outfitDetails')];
+    base.background     = [get('background')];
+    if(Math.random()<0.6) base.facialExpression = [get('facialExpression')];
+    if(Math.random()<0.5) base.nails = [get('nails')];
   }
-  base.actionPose = [ oneOf('actionPose') ];
-  base.facialExpression = [ oneOf('facialExpression') ];
-  base.hairstyle = [ oneOf('hairstyle') ];
-  if (Math.random()<0.5) base.hairDetails = [ oneOf('hairDetails') ];
-  if (Math.random()<0.4) base.nails = [ oneOf('nails') ];
-  if (Math.random()<0.5 && !base.shoes) base.shoes = [ oneOf('shoes') ];
-  if (Math.random()<0.35) base.accessories = [ oneOf('accessories') ];
-  if (Math.random()<0.30) base.skinDetails = [ oneOf('skinDetails') ];
 
-  result.textContent = describeStrict(base);
+  const picks = needRandomBase ? base : selections;
+
+  const parts = [];
+  const style = picks.characterStyle?.[0] || "hyper-realistic chibi mixed with Bratz-style";
+  parts.push(`${style} African American woman`);
+
+  if(picks.actionPose) parts.push(picks.actionPose[0]);
+  if(picks.facialExpression) parts.push(joinNice(picks.facialExpression));
+
+  if(picks.hairstyle) parts.push(`hair styled in ${picks.hairstyle[0]}`);
+  if(picks.hairDetails) parts.push(`with ${joinNice(picks.hairDetails)}`);
+
+  // outfits
+  const outfitBits = [];
+  if(picks.professionOutfits) outfitBits.push(picks.professionOutfits[0]);
+  if(picks.holidayOutfits)    outfitBits.push(picks.holidayOutfits[0]);
+  if(picks.outfitDetails)     outfitBits.push(...picks.outfitDetails);
+  if(outfitBits.length) parts.push(`wearing ${joinNice(outfitBits)}`);
+
+  const accBits = [];
+  if(picks.accessories) accBits.push(...picks.accessories);
+  if(picks.nails) accBits.push(picks.nails[0]);
+  if(picks.shoes) accBits.push(picks.shoes[0]);
+  if(accBits.length) parts.push(`accessorized with ${joinNice(accBits)}`);
+
+  // personalization
+  if(picks.seasonalMood)    parts.push(picks.seasonalMood[0]);
+  if(picks.emotionsEnergy)  parts.push(joinNice(picks.emotionsEnergy));
+  if(picks.hobbies)         parts.push(joinNice(picks.hobbies));
+  if(picks.foodDrinks)      parts.push(picks.foodDrinks[0]);
+  if(picks.musicHeadphones) parts.push(picks.musicHeadphones[0]);
+
+  // relationships all same style
+  if(picks.relationships){
+    parts.push(`${picks.relationships[0]} — ensure all characters share the same ${style} for a cohesive look`);
+  }
+
+  // pets
+  if(picks.pets) parts.push(picks.pets[0]);
+
+  // self / travel / school-work
+  if(picks.selfCare)   parts.push(picks.selfCare[0]);
+  if(picks.travel)     parts.push(picks.travel[0]);
+  if(picks.schoolWork) parts.push(picks.schoolWork[0]);
+
+  // inclusion
+  const inclusion = [];
+  if(picks.neurodiversity) inclusion.push(...picks.neurodiversity);
+  if(picks.accessibility)  inclusion.push(picks.accessibility[0]);
+  if(inclusion.length) parts.push(joinNice(inclusion));
+
+  // skin details — strong instruction
+  if(picks.skinDetails){
+    const list = joinNice(picks.skinDetails);
+    const hasVit = picks.skinDetails.some(x=>/vitiligo/i.test(x));
+    let line = `include ALL selected skin details: ${list}. Make them clearly visible and well-defined; do not omit or soften any.`;
+    if(hasVit) line += " Ensure vitiligo is prominent with high contrast; place patches on the face and hands where visible.";
+    parts.push(line);
+  }
+
+  if(picks.background) parts.push(picks.background[0]);
+  parts.push("highly detailed face and outfit, glossy 3D look, holographic highlights, fun and expressive vibe");
+
+  const sentence = parts.filter(Boolean).join(", ")
+    .replace(/\s+,/g,',')
+    .replace(/,\s+\./g,'.')
+    .replace(/\s+/g,' ')
+    .trim();
+
+  return sentence.charAt(0).toUpperCase()+sentence.slice(1)+'.';
+}
+
+function generate(useSelections=true, poseOnly=false){
+  const sel = getSelections();
+  const desc = makeDescription(useSelections ? sel : {}, poseOnly);
+  result.textContent = desc;
 }
 
 /* Buttons */
-btnWithSel.addEventListener('click', ()=>{ activate(btnWithSel); deactivate(btnRandom); generateStrict(); });
-btnRandom.addEventListener('click',   ()=>{ activate(btnRandom);   deactivate(btnWithSel); generateRandom(); });
-btnPose.addEventListener('click',     ()=> generatePoseOnly());
-btnGenAgain.addEventListener('click', ()=> {
-  if (btnWithSel.classList.contains('is-active')) generateStrict();
-  else generateRandom();
+btnRandom.addEventListener('click', ()=>{
+  btnRandom.classList.add('is-active'); btnWithSel.classList.remove('is-active');
+  generate(false,false);
 });
-btnClear.addEventListener('click', ()=>{ clearSelections(); result.textContent="Selections cleared. Pick options and generate again ✨"; });
+btnWithSel.addEventListener('click', ()=>{
+  btnWithSel.classList.add('is-active'); btnRandom.classList.remove('is-active');
+  generate(true,false);
+});
+btnPose.addEventListener('click', ()=> generate(true,true));
+btnGenAgain.addEventListener('click', ()=> {
+  if(btnWithSel.classList.contains('is-active')) generate(true,false);
+  else generate(false,false);
+});
+btnClear.addEventListener('click', ()=>{
+  clearSelections(); result.textContent="Selections cleared. Pick options and generate again ✨";
+});
 btnCopy.addEventListener('click', async ()=>{
   try{
     await navigator.clipboard.writeText(result.textContent);
-    pulse(btnCopy,"Copied!");
+    const old=btnCopy.textContent; btnCopy.textContent="Copied!"; setTimeout(()=>btnCopy.textContent=old,900);
   }catch(e){ alert("Copy failed. Select the text and copy manually."); }
 });
 
-/* UI helpers */
-function activate(el){ el.classList.add('is-active'); }
-function deactivate(el){ el.classList.remove('is-active'); }
-function pulse(el,label){
-  const old=el.textContent; el.textContent=label; el.style.filter='saturate(1.2) brightness(1.1)';
-  setTimeout(()=>{ el.textContent=old; el.style.filter=''; },900);
-}
-
 /* First render */
-result.textContent = "Pick your options and click a button ✨";
+generate(false,false);
 </script>
 </body>
 </html>
