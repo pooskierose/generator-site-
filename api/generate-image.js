@@ -1,66 +1,51 @@
-// Vercel Serverless Function
-// POST /api/generate-image  { prompt: string, size?: 512|768|1024 }
+// /api/generate-image.js
+import OpenAI from "openai";
+
+const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+
+const ALLOW_ORIGIN = new Set([
+  "https://elleandeastluxe.com",         // your custom Shopify domain
+  "https://elleandeastluxe.myshopify.com" // Shopify myshopify.com fallback
+]);
+
+function cors(req, res) {
+  const origin = req.headers.origin || "";
+  if (ALLOW_ORIGIN.has(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
+  res.setHeader("Vary", "Origin");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+}
 
 export default async function handler(req, res) {
-  // --- CORS (allow your store) ---
-  const ORIGIN = req.headers.origin || '';
-  const ALLOW_ORIGIN = [
-      'https://elleandeastluxe.myshopify.com',
-    'https://elleandeastluxe.com'
-  ];
-  if (ALLOW_ORIGIN.includes(ORIGIN)) {
-    res.setHeader('Access-Control-Allow-Origin', ORIGIN);
-  }
-  res.setHeader('Vary', 'Origin');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
-  if (req.method === 'OPTIONS') return res.status(200).end();
-
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
+  cors(req, res);
+  if (req.method === "OPTIONS") return res.status(204).end();
+  if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
 
   try {
-    const { prompt = '', size = 1024 } = req.body || {};
-    if (!prompt.trim()) {
-      return res.status(400).json({ error: 'Missing prompt' });
-    }
+    const { prompt = "", size = 1024 } = req.body || {};
+    const n = Number(size) || 1024;
+    const clampedSize = [256, 512, 768, 1024].includes(n) ? n : 1024;
 
-    const apiKey = process.env.OPENAI_API_KEY;
-    if (!apiKey) {
-      return res.status(500).json({ error: 'Server missing API key' });
-    }
+    if (!prompt.trim()) return res.status(400).json({ error: "Missing prompt" });
 
-    // Call OpenAI Images (gpt-image-1). Returns base64.
-    const r = await fetch('https://api.openai.com/v1/images/generations', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: 'gpt-image-1',
-        prompt,
-        size: `${size}x${size}`,
-        response_format: 'b64_json' // easy to send back to browser
-      })
+    const result = await client.images.generate({
+      model: "gpt-image-1",
+      prompt,
+      size: `${clampedSize}x${clampedSize}`
     });
 
-    const data = await r.json();
-    if (!r.ok) {
-      // Common errors: billing/limit (402/429), policy, etc.
-      const msg = data?.error?.message || 'Generation failed';
-      return res.status(r.status).json({ error: msg });
-    }
+    const url = result?.data?.[0]?.url;
+    if (!url) return res.status(502).json({ error: "No image URL returned" });
 
-    const b64 = data?.data?.[0]?.b64_json;
-    if (!b64) return res.status(500).json({ error: 'No image data returned' });
-
-    // Send a data URL (Shopify page can just set <img src=...>)
-    return res.status(200).json({ data_url: `data:image/png;base64,${b64}` });
+    return res.status(200).json({ image_url: url });
   } catch (err) {
-    console.error('gen error', err);
-    return res.status(500).json({ error: 'Server error' });
+    console.error("Image generation failed:", err);
+    const msg =
+      err?.response?.data?.error?.message ||
+      err?.message ||
+      "Generation failed";
+    return res.status(500).json({ error: msg });
   }
 }
