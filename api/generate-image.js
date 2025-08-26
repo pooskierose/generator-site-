@@ -1,51 +1,71 @@
 // /api/generate-image.js
-import OpenAI from "openai";
-
-const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-
-const ALLOW_ORIGIN = new Set([
-  "https://elleandeastluxe.com",         // your custom Shopify domain
-  "https://elleandeastluxe.myshopify.com" // Shopify myshopify.com fallback
-]);
-
-function cors(req, res) {
-  const origin = req.headers.origin || "";
-  if (ALLOW_ORIGIN.has(origin)) {
-    res.setHeader("Access-Control-Allow-Origin", origin);
-  }
-  res.setHeader("Vary", "Origin");
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-}
 
 export default async function handler(req, res) {
-  cors(req, res);
-  if (req.method === "OPTIONS") return res.status(204).end();
-  if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
+  // --- CORS (permissive while you finish setup) ---
+  const origin = req.headers.origin || '*';
+  res.setHeader('Access-Control-Allow-Origin', origin); // temp: echo origin
+  res.setHeader('Vary', 'Origin');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
+  if (req.method !== 'POST') {
+    return res.status(405).json({ ok: false, message: 'Use POST' });
+  }
 
   try {
-    const { prompt = "", size = 1024 } = req.body || {};
+    const { prompt = '', size = 1024 } = req.body || {};
+    if (!prompt.trim()) {
+      return res.status(400).json({ ok: false, message: 'Missing prompt' });
+    }
+
     const n = Number(size) || 1024;
-    const clampedSize = [256, 512, 768, 1024].includes(n) ? n : 1024;
+    const clamped = [256, 512, 768, 1024].includes(n) ? n : 1024;
+    const sizeStr = `${clamped}x${clamped}`;
 
-    if (!prompt.trim()) return res.status(400).json({ error: "Missing prompt" });
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!apiKey) {
+      return res.status(500).json({ ok: false, message: 'OPENAI_API_KEY is not set' });
+    }
 
-    const result = await client.images.generate({
-      model: "gpt-image-1",
-      prompt,
-      size: `${clampedSize}x${clampedSize}`
+    // Use OpenAI Images API (no response_format param)
+    const resp = await fetch('https://api.openai.com/v1/images/generations', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: 'gpt-image-1', // or 'dall-e-3' if that’s what your account supports
+        prompt,
+        size: sizeStr,
+      }),
     });
 
-    const url = result?.data?.[0]?.url;
-    if (!url) return res.status(502).json({ error: "No image URL returned" });
+    const data = await resp.json();
 
-    return res.status(200).json({ image_url: url });
+    // Bubble up OpenAI error text (429 quota, 401 key, etc)
+    if (!resp.ok) {
+      const msg =
+        data?.error?.message ||
+        data?.message ||
+        `OpenAI error (${resp.status})`;
+      return res.status(resp.status).json({ ok: false, message: msg });
+    }
+
+    const item = (data && (data.data?.[0] || data.images?.[0])) || {};
+    const directUrl = item.url;
+    const b64 = item.b64_json;
+
+    if (directUrl) return res.status(200).json({ ok: true, url: directUrl });
+    if (b64) return res.status(200).json({ ok: true, url: `data:image/png;base64,${b64}` });
+
+    return res.status(502).json({ ok: false, message: 'No image returned from OpenAI' });
   } catch (err) {
-    console.error("Image generation failed:", err);
-    const msg =
-      err?.response?.data?.error?.message ||
-      err?.message ||
-      "Generation failed";
-    return res.status(500).json({ error: msg });
+    console.error('generate-image error:', err);
+    return res.status(500).json({ ok: false, message: 'Server error' });
   }
 }
