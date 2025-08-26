@@ -1,57 +1,70 @@
 // /api/generate-image.js
+const ALLOWED_ORIGIN = "*"; // change to your domain later for stricter CORS
+
+const SIZE_MAP = {
+  square: "1024x1024",
+  portrait: "896x1152",
+  landscape: "1152x896",
+};
+
+function cors(res) {
+  res.setHeader("Access-Control-Allow-Origin", ALLOWED_ORIGIN);
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+}
+
 export default async function handler(req, res) {
+  cors(res);
+
+  if (req.method === "OPTIONS") { res.status(204).end(); return; }
+  if (req.method !== "POST") {
+    res.status(405).json({ ok: false, error: "Use POST" });
+    return;
+  }
+
   try {
-    // Handle preflight CORS requests
-    if (req.method === "OPTIONS") {
-      res.setHeader("Access-Control-Allow-Origin", process.env.CORS_ORIGIN || "*");
-      res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-      res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-      return res.status(204).end();
+    const { prompt, aspect } = req.body || {};
+    if (!prompt || typeof prompt !== "string" || prompt.trim().length < 3) {
+      res.status(400).json({ ok: false, error: "Missing or too-short prompt." });
+      return;
     }
 
-    // Allow your Shopify site to access
-    res.setHeader("Access-Control-Allow-Origin", process.env.CORS_ORIGIN || "*");
+    const size = SIZE_MAP[(aspect || "square").toLowerCase()] || SIZE_MAP.square;
 
-    // Only accept POST
-    if (req.method !== "POST") {
-      return res.status(405).json({ error: "Use POST" });
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!apiKey) {
+      res.status(500).json({ ok: false, error: "OPENAI_API_KEY is not set on the server." });
+      return;
     }
 
-    // Get prompt + size from request body
-    const { prompt, size = "1024x1024" } = JSON.parse(req.body || "{}");
-    if (!prompt || !prompt.trim()) {
-      return res.status(400).json({ error: "Missing prompt" });
-    }
-
-    // Call OpenAI Images API
     const r = await fetch("https://api.openai.com/v1/images/generations", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`,
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: "gpt-image-1",   // this is the image model
-        prompt,
-        size,                   // ex: "1024x1024" or "1024x1792"
-        response_format: "b64_json"
-      })
+        model: "gpt-image-1",
+        prompt: prompt.trim(),
+        size,
+        response_format: "b64_json",
+      }),
     });
 
-    const data = await r.json();
     if (!r.ok) {
-      return res.status(r.status).json(data);
+      let detail = "";
+      try { const j = await r.json(); detail = j?.error?.message || JSON.stringify(j); } catch {}
+      res.status(r.status).json({ ok: false, error: `OpenAI error (${r.status}): ${detail}` });
+      return;
     }
 
-    // Pull the base64 image
+    const data = await r.json();
     const b64 = data?.data?.[0]?.b64_json;
-    if (!b64) {
-      return res.status(500).json({ error: "No image returned" });
-    }
+    if (!b64) { res.status(502).json({ ok: false, error: "No image returned." }); return; }
 
-    // Send back image to the browser
-    return res.status(200).json({ imageBase64: b64 });
-  } catch (e) {
-    return res.status(500).json({ error: e?.message || "Server error" });
+    res.status(200).json({ ok: true, size, contentType: "image/png", b64 });
+  } catch (err) {
+    console.error("Server error:", err);
+    res.status(500).json({ ok: false, error: "Server error. Please try again." });
   }
 }
