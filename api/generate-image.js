@@ -1,53 +1,48 @@
 // /api/generate-image.js
-export default async function handler(req, res) {
-  // --- CORS (Shopify needs this) ---
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  if (req.method === "OPTIONS") return res.status(200).end();
+import OpenAI from "openai";
 
+export default async function handler(req, res) {
+  // CORS for Shopify storefront
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  if (req.method === "OPTIONS") return res.status(200).end();
   if (req.method !== "POST") {
-    return res.status(405).json({ error: "Use POST" });
+    return res.status(405).json({ error: "Method not allowed" });
   }
 
   try {
-    const apiKey = process.env.OPENAI_API_KEY;
-    if (!apiKey) {
-      return res.status(500).json({ error: "Missing OPENAI_API_KEY" });
-    }
-
-    const { prompt, size = "1024x1024" } = req.body || {};
-    if (!prompt || !prompt.trim()) {
+    const { prompt, size } = req.body || {};
+    if (!prompt || typeof prompt !== "string") {
       return res.status(400).json({ error: "Missing prompt" });
     }
 
-    // OpenAI Images API (gpt-image-1)
-    const r = await fetch("https://api.openai.com/v1/images/generations", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: "gpt-image-1",
-        prompt,
-        size, // must be "256x256" | "512x512" | "1024x1024"
-      }),
+    const px = Number(size) || 1024;
+
+    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+    const result = await openai.images.generate({
+      model: "gpt-image-1",
+      prompt,
+      size: `${px}x${px}`,
+      // Force base64 so we can always return a displayable data URL
+      response_format: "b64_json",
     });
 
-    const data = await r.json();
-
-    if (!r.ok) {
-      // Bubble up OpenAI error message
-      return res.status(r.status).json({ error: data.error?.message || "OpenAI error" });
+    const b64 = result?.data?.[0]?.b64_json;
+    if (!b64) {
+      return res.status(502).json({ error: "No image data from OpenAI" });
     }
 
-    const url = data?.data?.[0]?.url;
-    if (!url) return res.status(500).json({ error: "No image URL returned" });
+    const dataUrl = `data:image/png;base64,${b64}`;
 
-    // Keep response shape simple for the Shopify script
-    return res.status(200).json({ imageUrl: url });
-  } catch (e) {
-    return res.status(500).json({ error: "Server error" });
+    // The front-end looks for one of: image / url / images[0].url / b64_json
+    // We'll return `image` to make it unambiguous.
+    return res.status(200).json({ image: dataUrl });
+  } catch (err) {
+    console.error("generate-image error:", err);
+    return res
+      .status(500)
+      .json({ error: err?.response?.data || err?.message || "Server error" });
   }
 }
