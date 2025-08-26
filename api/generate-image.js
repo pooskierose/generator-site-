@@ -5,8 +5,8 @@ export default async function handler(req, res) {
   // --- CORS (allow your store) ---
   const ORIGIN = req.headers.origin || '';
   const ALLOW_ORIGIN = [
-    'https://YOUR-STORE.myshopify.com',
-    'https://yourcustomdomain.com'
+      'https://elleandeastluxe.myshopify.com',
+    'https://elleandeastluxe.com'
   ];
   if (ALLOW_ORIGIN.includes(ORIGIN)) {
     res.setHeader('Access-Control-Allow-Origin', ORIGIN);
