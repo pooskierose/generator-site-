@@ -1,71 +1,65 @@
 // /api/generate-image.js
+import OpenAI from "openai";
+
+const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+
+// allow only your domains
+const ALLOWED_ORIGINS = [
+  "https://elleandeastluxe.com",
+  "https://elleandeastluxe.myshopify.com"
+];
+
+function setCors(res, origin) {
+  const okOrigin = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+  res.setHeader("Access-Control-Allow-Origin", okOrigin);
+  res.setHeader("Vary", "Origin");
+  res.setHeader("Access-Control-Allow-Methods", "POST,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+}
 
 export default async function handler(req, res) {
-  // --- CORS (permissive while you finish setup) ---
-  const origin = req.headers.origin || '*';
-  res.setHeader('Access-Control-Allow-Origin', origin); // temp: echo origin
-  res.setHeader('Vary', 'Origin');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  setCors(res, req.headers.origin || "");
 
-  if (req.method === 'OPTIONS') {
+  if (req.method === "OPTIONS") {
     return res.status(200).end();
   }
-
-  if (req.method !== 'POST') {
-    return res.status(405).json({ ok: false, message: 'Use POST' });
+  if (req.method !== "POST") {
+    return res.status(405).json({ ok: false, message: "Use POST" });
   }
 
   try {
-    const { prompt = '', size = 1024 } = req.body || {};
-    if (!prompt.trim()) {
-      return res.status(400).json({ ok: false, message: 'Missing prompt' });
+    const { prompt, size = "1024x1024" } = req.body || {};
+    if (!prompt || typeof prompt !== "string") {
+      return res.status(400).json({ ok: false, message: "Missing prompt" });
     }
 
-    const n = Number(size) || 1024;
-    const clamped = [256, 512, 768, 1024].includes(n) ? n : 1024;
-    const sizeStr = `${clamped}x${clamped}`;
-
-    const apiKey = process.env.OPENAI_API_KEY;
-    if (!apiKey) {
-      return res.status(500).json({ ok: false, message: 'OPENAI_API_KEY is not set' });
+    // only allow these sizes
+    const allowed = ["1024x1024", "1024x1536", "1536x1024", "auto"];
+    if (!allowed.includes(size)) {
+      return res.status(400).json({
+        ok: false,
+        message: `Invalid value: '${size}'. Supported values are: '1024x1024', '1024x1536', '1536x1024', and 'auto'.`
+      });
     }
 
-    // Use OpenAI Images API (no response_format param)
-    const resp = await fetch('https://api.openai.com/v1/images/generations', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: 'gpt-image-1', // or 'dall-e-3' if that’s what your account supports
-        prompt,
-        size: sizeStr,
-      }),
+    const finalSize = size === "auto" ? "1024x1024" : size;
+
+    const resp = await client.images.generate({
+      model: "gpt-image-1",
+      prompt,
+      size: finalSize
     });
 
-    const data = await resp.json();
-
-    // Bubble up OpenAI error text (429 quota, 401 key, etc)
-    if (!resp.ok) {
-      const msg =
-        data?.error?.message ||
-        data?.message ||
-        `OpenAI error (${resp.status})`;
-      return res.status(resp.status).json({ ok: false, message: msg });
+    const b64 = resp?.data?.[0]?.b64_json;
+    if (!b64) {
+      return res.status(502).json({ ok: false, message: "No image returned from model" });
     }
 
-    const item = (data && (data.data?.[0] || data.images?.[0])) || {};
-    const directUrl = item.url;
-    const b64 = item.b64_json;
-
-    if (directUrl) return res.status(200).json({ ok: true, url: directUrl });
-    if (b64) return res.status(200).json({ ok: true, url: `data:image/png;base64,${b64}` });
-
-    return res.status(502).json({ ok: false, message: 'No image returned from OpenAI' });
+    // return as data URL so the Shopify page can display immediately
+    return res.status(200).json({ ok: true, url: `data:image/png;base64,${b64}` });
   } catch (err) {
-    console.error('generate-image error:', err);
-    return res.status(500).json({ ok: false, message: 'Server error' });
+    console.error(err);
+    const msg = err?.response?.data?.error?.message || err?.message || "Server error";
+    return res.status(500).json({ ok: false, message: msg });
   }
 }
